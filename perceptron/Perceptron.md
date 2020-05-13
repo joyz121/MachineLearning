@@ -1,3 +1,69 @@
+# Perceptron
+
+[TOC]
+
+
+
+## 感知机模型
+
+- 适用于==线性可分的二分类==问题
+
+- ==梯度下降法==对损失函数极小化
+
+  
+
+## 学习策略
+
+- 数据集	$\{(x_1,y_1),(x_2,y_2)...(x_N,y_N)\}$，其中$y_i$为label
+- 求出超平面$w*x +b=0$ 将正样本和负样本分割到该超平面的两侧 
+
+
+
+## 如何求得超平面？
+
+### 损失函数
+
+$L(w, b)=-\sum \limits_{x_i \in M } y_i(w*x_i+b)$  ,M为误分类点的集合
+
+### Stochastic gradient descent(随机梯度下降)
+
+####损失函数的梯度
+
+$\partial L/ \partial w=-\sum\limits_{x_i \in M } y_ix_i$
+
+$\partial L/ \partial b=-\sum\limits_{x_i \in M }x_i$
+
+#### 感知机算法
+
+- 选取任意$w_0,b_0$
+
+- 训练集数据$(x_i,y_i)$
+
+- if $y_i(w*x_i+b)<=0$ ==误分类数据==
+
+  ​		$w=w+ny_ix_i$
+
+  ​		$b=b+ny_i$
+
+  ==$n \in(0,1]$,称为学习率== 
+
+
+
+##算法收敛性
+
+待填写
+
+
+
+## 解的不唯一性
+
+感知机算法的解既依赖于初值的选择，也依赖于误分类点的选择顺序
+
+
+
+##Python实现
+
+```python
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -21,6 +87,7 @@ b=0
 n=0.01#学习率
 
 #data为1xn的矩阵，w为1xn的矩阵
+#算法核心部分
 def preceptron(dataset,labels,times):
     global w,b,n
     a=0
@@ -31,8 +98,9 @@ def preceptron(dataset,labels,times):
         for i in range(m):
             xi=dataset[i]
             yi=labels[i]
-            #错误分类
+            #误分类点
             if yi*(w*xi.T+b)[0,0]<=0:
+                #更新w,b
                 w=w+n*yi*xi
                 b=b+n*yi
                 flag=True
@@ -40,6 +108,7 @@ def preceptron(dataset,labels,times):
                 a=a+1
                 print('第 %d 次迭代'%a)
                 print('w=',w,'b=',b)
+        #如果没有误分类点，结束循环
         if not flag:
             break;   
 
@@ -76,5 +145,9 @@ def show(w,b):
 
 
 if __name__ == '__main__':
-    preceptron(dataMat,label,i)
+    preceptron(dataMat,label,200)
     show(w,b)
+```
+
+![TIM图片20200413142019](F:\BLOG\IMG\TIM图片20200413142019.png)
+

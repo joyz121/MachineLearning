@@ -69,5 +69,5 @@ def show(w,b):
     plt.show()
 
 if __name__ == '__main__':
-    preceptron(dataMat,label,200)
+    preceptron(dataMat,label,i)
     show(w,b)
